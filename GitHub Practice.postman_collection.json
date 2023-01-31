@@ -1,0 +1,338 @@
+{
+	"info": {
+		"_postman_id": "657594bf-eb24-48ed-a941-0d6af53e136d",
+		"name": "GitHub Practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24104507"
+	},
+	"item": [
+		{
+			"name": "Issues",
+			"item": [
+				{
+					"name": "Get Single Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Issue number is correct\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.number).equal(1);\r",
+									"})\r",
+									"\r",
+									"pm.test (\"Issue is open\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.state).equal(\"open\");\r",
+									"})\r",
+									"\r",
+									"pm.test (\"Issue created by correct user\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.user.login).to.equal(\"nikitsonev\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/nikitsonev/postman/issues/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"nikitsonev",
+								"postman",
+								"issues",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Issue Labels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Satus code is 200 second test\", function(){\r",
+									"   // console.log(\"Response :\", pm.response);\r",
+									"    pm.expect(pm.response.code).equals(200);\r",
+									"    pm.expect(pm.response.code).to.be.equal(200);\r",
+									"    pm.expect(pm.response.code).to.be.equals(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Status status check\", function(){\r",
+									"    \r",
+									"    pm.expect(pm.response.status, \"Status property\").equals(\"OK\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/nikitsonev/postman/issues/1/labels",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"nikitsonev",
+								"postman",
+								"issues",
+								"1",
+								"labels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if response is an array of issues\", function(){\r",
+									"    const body = pm.response.json();\r",
+									"    console.log(\"Body\", body);\r",
+									"    pm.expect(Array.isArray(body)).equals(true);\r",
+									"\r",
+									"    for (let item of body){\r",
+									"    pm.expect(typeof(item.title)).equals(\"string\");\r",
+									"    pm.expect(typeof(item.number)).equal(\"number\");\r",
+									"    pm.expect(item.number, \"Issue number property\").is.greaterThan(0);\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/nikitsonev/postman/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"nikitsonev",
+								"postman",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check issue number\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.number, \"Number property\").greaterThan(0);\r",
+									"    pm.expect(jsonData.title, \"Title property\").equal(\"Issue from Postman\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "nikitsonev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Issue from Postman\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/nikitsonev/postman/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"nikitsonev",
+								"postman",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Issue With Labels",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "nikitsonev",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Issue with labels\",\r\n    \"labels\": [\"bug\", \"priority:critical\", \"myLabel\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/nikitsonev/postman/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"nikitsonev",
+								"postman",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Repos",
+			"item": [
+				{
+					"name": "Get All Repos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/users/nikitsonev/repos",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"users",
+								"nikitsonev",
+								"repos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Repo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check repo name\", function() {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.expect(body.name, \"Name property\").equals(\"postman\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/nikitsonev/postman",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"nikitsonev",
+								"postman"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
